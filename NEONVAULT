@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NEONVAULT — Магазин битов</title>
+  <style>
+    :root {
+      --bg: #08090d;
+      --surface: #11131b;
+      --surface-hover: #181b26;
+      --border: #232738;
+      --text: #f3f4f8;
+      --muted: #8f96ad;
+      --accent: #00f0ff;
+      --accent-2: #8b5cf6;
+      --danger: #ff4d6d;
+      --radius: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+      background: radial-gradient(circle at top right, rgba(139, 92, 246, 0.14), transparent 40%),
+                  radial-gradient(circle at bottom left, rgba(0, 240, 255, 0.1), transparent 40%),
+                  var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: rgba(8, 9, 13, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 70px;
+    }
+
+    .logo {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-badge {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 14px var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .cart-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 10px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: 0.2s;
+    }
+
+    .cart-btn:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 16px rgba(0, 240, 255, 0.15);
+    }
+
+    .cart-count {
+      background: var(--accent);
+      color: #05070a;
+      font-size: 0.8rem;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 999px;
+    }
+
+    /* Hero */
+    .hero {
+      padding: 72px 0 48px;
+      text-align: center;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(0, 240, 255, 0.1);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      color: var(--accent);
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      color: var(--muted);
+      max-width: 620px;
+      margin: 0 auto 28px;
+      font-size: 1.05rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #00b8d4);
+      color: #05070a;
+      border: none;
+      padding: 13px 24px;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(0, 240, 255, 0.3);
+    }
+
+    .btn-secondary {
+      background:
+
+
+var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 13px 24px;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent-2);
+    }
+
+    /* Controls / Filters */
+    .catalog-section {
+      padding: 30px 0 70px;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .genres {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .genre-pill {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .genre-pill.active,
+    .genre-pill:hover {
+      color: var(--text);
+      border-color: var(--accent);
+      background: rgba(0, 240, 255, 0.08);
+    }
+
+    .search-input {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 10px 14px;
+      border-radius: 10px;
+      min-width: 240px;
+      outline: none;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent);
+    }
+
+    /* Beat List */
+    .beat-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .beat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      display: grid;
+      grid-template-columns: auto 1fr auto auto;
+      align-items: center;
+      gap: 18px;
+      transition: 0.2s;
+    }
+
+    .beat-card:hover {
+      background: var(--surface-hover);
+      border-color: #323850;
+    }
+
+    .beat-card.playing {
+      border-color: var(--accent);
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.12);
+    }
+
+    .play-btn {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(0, 240, 255, 0.14);
+      color: var(--accent);
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: 0.2s;
+    }
+
+    .beat-card.playing .play-btn,
+    .play-btn:hover {
+      background: var(--accent);
+      color: #05070a;
+    }
+
+    .beat-info h3 {
+      font-size: 1.05rem;
+      margin-bottom: 4px;
+    }
+
+    .beat-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 0.84rem;
+      color: var(--muted);
+    }
+
+    .tag {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+
+    .license-select {
+      background: #0c0e14;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 9px 12px;
+      border-radius: 9px;
+      font-size: 0.88rem;
+      cursor: pointer;
+    }
+
+    .buy-btn {
+      background: var(--accent-2);
+      color: #fff;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 9px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: 0.2s;
+    }
+
+    .buy-btn:hover {
+      filter: brightness(1.12);
+    }
+
+    /* Licenses Grid */
+    .section-title {
+      font-size: 1.7rem;
+      margin-bottom: 8px;
+    }
+
+    .section-sub {
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+
+    .licenses-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-bottom: 70px;
+    }
+
+    .license-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .license-card.featured {
+      border-color: var(--accent);
+      background: linear-gradient(180deg, rgba(0, 240, 255, 0.07), var(--surface));
+    }
+
+
+.license-card h3 {
+      font-size: 1.15rem;
+      margin-bottom: 6px;
+    }
+
+    .license-price {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+
+    .license-card ul {
+      list-style: none;
+      color: var(--muted);
+      font-size: 0.9rem;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    /* Custom Beat Form */
+    .custom-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      margin-bottom: 70px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .input, textarea {
+      width: 100%;
+      background: #0c0e14;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 0.95rem;
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+      margin-bottom: 14px;
+    }
+
+    /* Drawer Cart */
+    .drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      display: none;
+      z-index: 50;
+    }
+
+    .drawer-backdrop.open {
+      display: block;
+    }
+
+    .drawer {
+      position: fixed;
+      top: 0;
+      right: -400px;
+      width: 100%;
+      max-width: 380px;
+      height: 100vh;
+      background: #0e1017;
+      border-left: 1px solid var(--border);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      z-index: 60;
+      transition: right 0.25s ease;
+    }
+
+    .drawer.open {
+      right: 0;
+    }
+
+    .drawer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 1.4rem;
+      cursor: pointer;
+    }
+
+    .cart-items {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .cart-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .remove-btn {
+      background: none;
+      border: none;
+      color: var(--danger);
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+
+    .drawer-footer {
+      border-top: 1px solid var(--border);
+      padding-top: 16px;
+    }
+
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 14px;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--surface);
+      border: 1px solid var(--accent);
+      color: var(--text);
+      padding: 12px 20px;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      display: none;
+      z-index: 80;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 0;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    max-width: 760px {
+      .beat-card {
+        grid-template-columns: auto 1fr;
+      }
+      .license-select, .buy-btn {
+        grid-column: 1 / -1;
+        width: 100%;
+      }
+      .nav-links {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container nav">
+      <a href="#" class="logo">
+        <span class="logo-badge"></span>
+        NEONVAULT
+      </a>
+      <nav class="nav-links">
+        <a href="#catalog">Каталог</a>
+        <a href="#licenses">Лицензии</a>
+        <a href="#custom">Бит на заказ</a>
+      </nav>
+      <button c
+
+
+lass="cart-btn" id="openCartBtn">
+        Корзина <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-tag">Studio Grade Instrumentals</div>
+      <h1>Звучание, которое выделит твой <span>следующий релиз</span></h1>
+      <p>Выбирай готовые инструменталы с мгновенной лицензией или заказывай индивидуальный продакшн под твой стиль и вокал.</p>
+      <div class="hero-actions">
+        <a href="#catalog" class="btn-primary">Слушать каталог</a>
+        <a href="#custom" class="btn-secondary">Заказать бит</a>
+      </div>
+    </section>
+
+    <section id="catalog" class="catalog-section">
+      <div class="controls">
+        <div class="genres" id="genreFilters">
+          <button class="genre-pill active" data-genre="All">Все жанры</button>
+          <button class="genre-pill" data-genre="Trap">Trap</button>
+          <button class="genre-pill" data-genre="Drill">Drill</button>
+          <button class="genre-pill" data-genre="Synthwave">Synthwave</button>
+          <button class="genre-pill" data-genre="Lo-Fi">Lo-Fi</button>
+        </div>
+        <input type="text" id="searchInput" class="search-input" placeholder="Поиск по названию, тегу, BPM..." />
+      </div>
+
+      <div class="beat-list" id="beatList"></div>
+    </section>
+
+    <section id="licenses">
+      <h2 class="section-title">Типы лицензий</h2>
+      <p class="section-sub">Выбирай формат под текущие задачи трека — от демо-записи до полного выкупа прав.</p>
+      <div class="licenses-grid">
+        <div class="license-card">
+          <div>
+            <h3>MP3 Lease</h3>
+            <div class="license-price">1 500 ₽</div>
+            <ul>
+              <li>• MP3 файл (320 kbps) без тегов</li>
+              <li>• До 50 000 стримов</li>
+              <li>• Некоммерческие выступления</li>
+            </ul>
+          </div>
+        </div>
+        <div class="license-card featured">
+          <div>
+            <h3>WAV Lease</h3>
+            <div class="license-price">3 500 ₽</div>
+            <ul>
+              <li>• WAV (24-bit) + MP3 без тегов</li>
+              <li>• До 250 000 стримов</li>
+              <li>• Монетизация на стримингах</li>
+            </ul>
+          </div>
+        </div>
+        <div class="license-card">
+          <div>
+            <h3>Trackout / Stems</h3>
+            <div class="license-price">8 000 ₽</div>
+            <ul>
+              <li>• Все дорожки (Stems) + WAV + MP3</li>
+              <li>• До 1 000 000 стримов</li>
+              <li>• Полная свобода сведения</li>
+            </ul>
+          </div>
+        </div>
+        <div class="license-card">
+          <div>
+            <h3>Exclusive Rights</h3>
+            <div class="license-price">25 000 ₽</div>
+            <ul>
+              <li>• Полный выкуп прав, снятие с продажи</li>
+              <li>• Безлимитные стримы и релизы</li>
+              <li>• Передача всех исходников</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="custom" class="custom-box">
+      <h2 class="section-title">Индивидуальный бит на заказ</h2>
+      <p class="section-sub">Опиши референсы, настроение, темп и контакты — обсудим детали и сроки.</p>
+      <form id="customForm">
+        <div class="form-grid">
+          <input type="text" class="input" name="name" placeholder="Твоё имя / никнейм" required />
+          <input type="text" class="input" name="contact" placeholder="Telegram (@username) или Email" required />
+          <input type="text" class="input" name="genre" placeholder="Жанр и референсы" required />
+        </div>
+        <textarea name="details" placeholder="Пожелания по настроению, BPM, структуре трека..." required></textarea>
+        <button type="submit" class="btn-primary">Отправить заявку</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">© 2026 NEONVAULT Beats. Все права защищены.</div>
+  </footer>
+
+
+<!-- Cart Drawer -->
+  <div class="drawer-backdrop" id="drawerBackdrop"></div>
+  <aside class="drawer" id="cartDrawer">
+    <div>
+      <div class="drawer-header">
+        <h3>Корзина</h3>
+        <button class="close-btn" id="closeCartBtn">✕</button>
+      </div>
+      <div class="cart-items" id="cartItems"></div>
+    </div>
+    <div class="drawer-footer">
+      <div class="total-row">
+        <span>Итого:</span>
+        <span id="cartTotal">0 ₽</span>
+      </div>
+      <button class="btn-primary" style="width: 100%;" id="checkoutBtn">Оформить заказ</button>
+    </div>
+  </aside>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // Каталог битов (замени audioUrl на пути к твоим MP3-файлам, например "./beats/track1.mp3")
+    const BEATS = [
+      {
+        id: "b1",
+        title: "Midnight Static",
+        genre: "Trap",
+        bpm: 142,
+        key: "F minor",
+        tags: ["dark", "808", "night"],
+        audioUrl: "",
+        freq: 110,
+        licenses: [
+          { id: "mp3", name: "MP3 Lease", price: 1500 },
+          { id: "wav", name: "WAV Lease", price: 3500 },
+          { id: "stems", name: "Trackout / Stems", price: 8000 },
+          { id: "excl", name: "Exclusive Rights", price: 25000 }
+        ]
+      },
+      {
+        id: "b2",
+        title: "Cold London",
+        genre: "Drill",
+        bpm: 144,
+        key: "C# minor",
+        tags: ["uk drill", "sliding 808", "aggressive"],
+        audioUrl: "",
+        freq: 130.81,
+        licenses: [
+          { id: "mp3", name: "MP3 Lease", price: 1500 },
+          { id: "wav", name: "WAV Lease", price: 3500 },
+          { id: "stems", name: "Trackout / Stems", price: 8000 },
+          { id: "excl", name: "Exclusive Rights", price: 25000 }
+        ]
+      },
+      {
+        id: "b3",
+        title: "Cyber Highway",
+        genre: "Synthwave",
+        bpm: 118,
+        key: "A minor",
+        tags: ["retro", "analog", "neon"],
+        audioUrl: "",
+        freq: 146.83,
+        licenses: [
+          { id: "mp3", name: "MP3 Lease", price: 1500 },
+          { id: "wav", name: "WAV Lease", price: 3500 },
+          { id: "stems", name: "Trackout / Stems", price: 8000 },
+          { id: "excl", name: "Exclusive Rights", price: 25000 }
+        ]
+      },
+      {
+        id: "b4",
+        title: "Rainy Tape",
+        genre: "Lo-Fi",
+        bpm: 84,
+        key: "D major",
+        tags: ["chill", "vinyl", "rhodes"],
+        audioUrl: "",
+        freq: 164.81,
+        licenses: [
+          { id: "mp3", name: "MP3 Lease", price: 1200 },
+          { id: "wav", name: "WAV Lease", price: 2900 },
+          { id: "stems", name: "Trackout / Stems", price: 6500 },
+          { id: "excl", name: "Exclusive Rights", price: 20000 }
+        ]
+      }
+    ];
+
+    let selectedGenre = "All";
+    let searchQuery = "";
+    let cart = [];
+    let activeBeatId = null;
+    let htmlAudio = null;
+    let audioCtx = null;
+    let synthInterval = null;
+
+    const beatListEl = document.getElementById("beatList");
+    const cartCountEl = document.getElementById("cartCount");
+    const cartItemsEl = document.getElementById("cartItems");
+    const cartTotalEl = document.getElementById("cartTotal");
+    const toastEl = document.getElementById("toast");
+
+    function showToast(msg) {
+      toastEl.textContent = msg;
+      toastEl.style.display = "block";
+      clearTimeout(toastEl._timer);
+      toastEl._timer = setTimeout(() => {
+        toastEl.style.display = "none";
+      }, 2800);
+    }
+
+    function stopAllAudio() {
+      if (htmlAudio) {
+        htmlAudio.pause();
+        htmlAudio.currentTime = 0;
+        htmlAudio = null;
+      }
+      if (synthInterval) {
+        clearInterval(synthInterval);
+        synthInterval = null;
+      }
+      activeBeatId = null;
+    }
+
+    // Демо-синтезатор, если audioUrl ещё не заполнен реальным MP3
+    function startDemoSynth(baseFreq, bpm) {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if
+
+
+(audioCtx.state === "suspended") {
+        audioCtx.resume();
+      }
+      const stepMs = (60 / bpm) * 1000 / 2;
+      const pattern = [1, 1, 1.5, 1, 1.25, 1, 1.5, 1.875];
+      let step = 0;
+
+      const triggerNote = () => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "sawtooth";
+        osc.frequency.value = baseFreq * pattern[step % pattern.length];
+
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.22);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.23);
+        step++;
+      };
+
+      triggerNote();
+      synthInterval = setInterval(triggerNote, stepMs);
+    }
+
+    function togglePlay(beatId) {
+      const wasPlaying = activeBeatId === beatId;
+      stopAllAudio();
+
+      if (!wasPlaying) {
+        const beat = BEATS.find(b => b.id === beatId);
+        if (!beat) return;
+        activeBeatId = beatId;
+
+        if (beat.audioUrl) {
+          htmlAudio = new Audio(beat.audioUrl);
+          htmlAudio.play().catch(() => {
+            showToast("Не удалось загрузить аудиофайл. Проверь путь audioUrl.");
+            stopAllAudio();
+            renderBeats();
+          });
+          htmlAudio.onended = () => {
+            stopAllAudio();
+            renderBeats();
+          };
+        } else {
+          startDemoSynth(beat.freq || 110, beat.bpm);
+        }
+      }
+      renderBeats();
+    }
+
+    function renderBeats() {
+      const filtered = BEATS.filter(beat => {
+        const matchesGenre = selectedGenre === "All" || beat.genre === selectedGenre;
+        const q = searchQuery.toLowerCase();
+        const matchesSearch =
+          beat.title.toLowerCase().includes(q) ||
+          beat.key.toLowerCase().includes(q) ||
+          String(beat.bpm).includes(q) ||
+          beat.tags.some(t => t.toLowerCase().includes(q));
+        return matchesGenre && matchesSearch;
+      });
+
+      if (!filtered.length) {
+        beatListEl.innerHTML = `<p style="color: var(--muted); padding: 20px 0;">По твоему запросу биты не найдены.</p>`;
+        return;
+      }
+
+      beatListEl.innerHTML = filtered.map(beat => {
+        const isPlaying = activeBeatId === beat.id;
+        const options = beat.licenses
+          .map((lic, idx) => `<option value="${idx}">${lic.name} — ${lic.price.toLocaleString("ru-RU")} ₽</option>`)
+          .join("");
+
+        return `
+          <article class="beat-card ${isPlaying ? "playing" : ""}">
+            <button class="play-btn" onclick="togglePlay('${beat.id}')" title="Слушать">
+              ${isPlaying ? "❚❚" : "▶"}
+            </button>
+            <div class="beat-info">
+              <h3>${beat.title}</h3>
+              <div class="beat-meta">
+                <span>${beat.genre}</span>
+                <span>• ${beat.bpm} BPM</span>
+                <span>• ${beat.key}</span>
+                ${beat.tags.map(t => `<span class="tag">#${t}</span>`).join("")}
+              </div>
+            </div>
+            <select class="license-select" id="lic-${beat.id}">
+              ${options}
+            </select>
+            <button class="buy-btn" onclick="addToCart('${beat.id}')">В корзину</button>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function addToCart(beatId) {
+      const beat = BEATS.find(b => b.id === beatId);
+      const selectEl = document.getElementById(`lic-${beatId}`);
+      const license = beat.licenses[Number(selectEl.value)];
+
+      const existing = cart.find(item => item.beatId === beatId && item.licenseId === license.id);
+      if (existing) {
+        showToast("Эта лицензия уже добавлена в корзину");
+        return;
+      }
+
+      cart.push({
+        beatId: beat.id,
+        title: beat.title,
+        licenseId: license.id,
+        licenseName: license.name,
+        price: license.price
+      });
+      updateCartUI();
+      showToast(
+MAXIMA
+mxm.id
+
+
+`«${beat.title}» (${license.name}) добавлен в корзину`);
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      updateCartUI();
+    }
+
+    function updateCartUI() {
+      cartCountEl.textContent = cart.length;
+      const total = cart.reduce((sum, item) => sum + item.price, 0);
+      cartTotalEl.textContent = `${total.toLocaleString("ru-RU")} ₽`;
+
+      if (!cart.length) {
+        cartItemsEl.innerHTML = `<p style="color: var(--muted);">Корзина пока пуста.</p>`;
+        return;
+      }
+
+      cartItemsEl.innerHTML = cart.map((item, idx) => `
+        <div class="cart-item">
+          <div>
+            <strong>${item.title}</strong>
+            <div style="font-size: 0.85rem; color: var(--muted);">${item.licenseName} • ${item.price.toLocaleString("ru-RU")} ₽</div>
+          </div>
+          <button class="remove-btn" onclick="removeFromCart(${idx})">Удалить</button>
+        </div>
+      `).join("");
+    }
+
+    // Фильтры и поиск
+    document.getElementById("genreFilters").addEventListener("click", (e) => {
+      if (!e.target.classList.contains("genre-pill")) return;
+      document.querySelectorAll(".genre-pill").forEach(btn => btn.classList.remove("active"));
+      e.target.classList.add("active");
+      selectedGenre = e.target.dataset.genre;
+      renderBeats();
+    });
+
+    document.getElementById("searchInput").addEventListener("input", (e) => {
+      searchQuery = e.target.value.trim();
+      renderBeats();
+    });
+
+    // Корзина
+    const drawer = document.getElementById("cartDrawer");
+    const backdrop = document.getElementById("drawerBackdrop");
+
+    function openCart() {
+      drawer.classList.add("open");
+      backdrop.classList.add("open");
+    }
+
+    function closeCart() {
+      drawer.classList.remove("open");
+      backdrop.classList.remove("open");
+    }
+
+    document.getElementById("openCartBtn").addEventListener("click", openCart);
+    document.getElementById("closeCartBtn").addEventListener("click", closeCart);
+    backdrop.addEventListener("click", closeCart);
+
+    document.getElementById("checkoutBtn").addEventListener("click", () => {
+      if (!cart.length) {
+        showToast("Добавь хотя бы один бит в корзину");
+        return;
+      }
+      cart = [];
+      updateCartUI();
+      closeCart();
+      showToast("Заказ оформлен! Подключи приём оплат для реальных транзакций.");
+    });
+
+    // Форма кастомного бита
+    document.getElementById("customForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      e.target.reset();
+      showToast("Заявка отправлена! Не забудь привязать форму к Telegram или почте.");
+    });
+
+    renderBeats();
+    updateCartUI();
+  </script>
+</body>
+</html>
